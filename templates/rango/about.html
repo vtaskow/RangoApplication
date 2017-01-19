@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+    <head>
+        <title>Rango</title>
+    </head>
+    <body>
+        <h1>This is the 'about' page</h1>
+        <div>
+            <strong> This tutorial has been put together by {{ author }}</strong><br/>
+        </div>
+        <div>
+            <a href="/rango/">Rango</a><br/>
+            <img src='{% static "images/moriarty.jpg" %}' alt="Picture of Professor James Moriarty (Sherlock Holmes)" /> 
+            <img src='{{ MEDIA_URL }}cat.jpg' alt="Picture of the cat breed Maine Coon" />
+        </div>
+        
+    </body>
+</html>
