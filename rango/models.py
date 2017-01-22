@@ -13,12 +13,14 @@ class Category(models.Model):
     class Meta:
         verbose_name_plural = 'Categories'
 
+    def __str__(self):
+        return self.name
+
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super(Category, self).save(*args, **kwargs)
 
-    def __str__(self):
-        return self.name
+
 
 class Page(models.Model):
     category = models.ForeignKey(Category)
