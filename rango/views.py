@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from rango.models import Category, Page
+from rango.forms import CategoryForm
 
 # Create your views here.
 
@@ -13,6 +14,7 @@ def index(request):
     context_dict = {'categories': category_list, 'pages': pages_list}
 
     return render(request, 'rango/index.html', context=context_dict)
+
 
 def show_category(request, category_name_slug):
     # create context dict to be passed to template later
@@ -33,6 +35,33 @@ def show_category(request, category_name_slug):
     # render the response and return it to the client
     return render(request, 'rango/category.html', context=context_dict)
 
+
 def about(request):
     context_dict = {'author' : "Viktor Taskov"}
     return render(request, 'rango/about.html', context=context_dict)
+
+
+def add_category(request):
+    form = CategoryForm()
+    
+    if request.method == 'POST':
+        form = CategoryForm(request.POST)
+
+        if form.is_valid():
+            #cat = form.save(commit=True)
+            form.save(commit=True)
+            #print(cat, cat.slug)
+            return index(request)
+        else:
+            print(form.errors)
+
+    return render(request, 'rango/add_category.html', {'form': form})
+    
+
+
+
+
+
+
+
+
