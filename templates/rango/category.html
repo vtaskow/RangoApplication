@@ -1,12 +1,11 @@
-<!DOCTYPE html>
+{% extends 'rango/base.html' %}
 {% load staticfiles %}
-<html>
-    <head>
-        <link rel="shortcut icon" href="{%  static 'images/favicon.ico' %}" />
-        <title>Rango</title>
-    </head>
-    <body>
 
+{% block title_block %}
+    {{ category.name }}
+{% endblock %}
+
+{% block body_block %}
         <div>
         {% if category %}
             <h1>{{ category.name }}</h1>
@@ -25,9 +24,8 @@
         </div>
         <div>
             {% if category %}
-                <a href="/rango/category/{{ category.slug }}/add_page/">Add a New Page</a><br />
+                <a href=" url 'add_page' category.slug ">Add a New Page</a><br />
             {% endif %}
             <a href="/rango/">Back to index page</a>
         </div>
-    </body>
-</html>
+{% endblock %}
