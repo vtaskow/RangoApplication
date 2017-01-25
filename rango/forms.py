@@ -23,12 +23,11 @@ class PageForm(forms.ModelForm):
         # or exclude = ('category', ) - hiding the foreign key
 
     def clean(self):
-        # check any fields the user might get wrong
-        cleaned_data = self.cleaned_data
+        cleaned_data = super(PageForm, self).clean()
         url = cleaned_data.get('url')
-        # If url is not empty and doesn't start with 'http://',
-        # then prepend 'http://'.
+
+        # If url is not empty and doesn't start with 'http://', prepend 'http://'.
         if url and not url.startswith('http://'):
             url = 'http://' + url
             cleaned_data['url'] = url
-            return cleaned_data
+        return cleaned_data
