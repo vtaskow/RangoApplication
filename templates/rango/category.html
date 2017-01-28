@@ -6,26 +6,24 @@
 {% endblock %}
 
 {% block body_block %}
-        <div>
-        {% if category %}
-            <h1>{{ category.name }}</h1>
-            {% if pages %}
-                <ul>
+    {% if category %}
+
+        <h1>{{ category.name }}</h1>
+
+        {% if pages %}
+            <ul>
                 {% for page in pages %}
                     <li><a href="{{ page.url }}">{{ page.title }}</a></li>
                 {% endfor %}
-                </ul>
-            {% else %}
-            <strong>No pages currently in the category.</strong>
-            {% endif %}
+            </ul>
         {% else %}
-            The specified entry does not exist!
+            <strong>No pages currently in category.</strong><br /><br />
         {% endif %}
-        </div>
-        <div>
-            {% if category %}
-                <a href=" url 'add_page' category.slug ">Add a New Page</a><br />
-            {% endif %}
-            <a href="/rango/">Back to index page</a>
-        </div>
+
+        <a href="{% url 'rango:add_page' category.slug %}">Add a Page</a>
+
+    {% else %}
+        The specified category does not exist!
+    {% endif %}
+
 {% endblock %}

@@ -1,20 +1,17 @@
-<!DOCTYPE html>
+{% extends 'rango/base.html' %}
 {% load staticfiles %}
-<html>
-    <head>
-        <link rel="shortcut icon" href="{%  static 'images/favicon.ico' %}" />
-        <title>About</title>
-    </head>
-    <body>
-        <h1>This is the 'about' page</h1>
-        <div>
-            <strong> This tutorial has been put together by {{ author }}</strong><br/>
-        </div>
-        <div>
-            <a href="/rango/">Rango</a><br/>
-            <img src="{% static 'images/moriarty.jpg' %}" alt="Picture of Professor James Moriarty (Sherlock Holmes)" /> 
-            <img src='{{ MEDIA_URL }}cat.jpg' alt="Picture of the cat breed Maine Coon" />
-        </div>
-        
-    </body>
-</html>
+
+{% block title_block %}
+    About
+{% endblock %}
+
+{% block body_block %}
+    <h1>This is the 'about' page</h1>
+    <div>
+        <strong> This tutorial has been put together by {{ author }}</strong><br/>
+    </div>
+    <div>
+        <img src="{% static 'images/moriarty.jpg' %}" style="width:256px;height:256px;" alt="Picture of Professor James Moriarty (Sherlock Holmes)"/>
+        <img src='{{ MEDIA_URL }}cat.jpg' style="width:256px;height:256px;" alt="Picture of the cat breed Maine Coon"/>
+    </div>
+{% endblock %}
