@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load staticfiles %}
+{% load rango_template_tags %}
 <html>
     <head>
         <link rel="shortcut icon" href="{%  static 'images/favicon.ico' %}" />
@@ -12,10 +13,18 @@
     </head>
     <body>
         <div>
+            {% block sidebar_block %}
+                {% get_category_list %}
+            {% endblock %}
+        </div>
+
+        <div>
             {% block body_block %}
             {% endblock %}
         </div>
+
         <hr/>
+
         <div>
             <ul>
                 <li><a href="{% url 'rango:add_category' %}">Add New Category</a></li>
