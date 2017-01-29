@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from rango.models import Category, Page
-from rango.forms import CategoryForm, PageForm
+from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm
 
 
 # Create your views here.
@@ -80,3 +80,43 @@ def add_page(request, category_name_slug):
             print(form.errors)
     context_dict = {"form": form, "category": category}
     return render(request, 'rango/add_page.html', context_dict)
+
+
+def register(request):
+    # A boolean to tell if the reg-n has been successful
+    registered = False
+
+    if request.method == 'POST':  # if a form has been submitted
+        # Grab info from the submitted form
+        user_form = UserForm(data=request.POST)
+        profile_form = UserProfileForm(data=request.POST)
+
+        if user_form.is_valid() and profile_form.is_valid():
+            # save the user's form data to db
+            user = user_form.save()
+            # hash user's password
+            user.set_password(user.password)
+            user.save()
+
+            # manually save additional info from the form
+            profile = profile_form.save(commit=False)
+            # link it with this user instance
+            profile.user = user
+
+            if 'picture' in request.FILES:  # if picture was provided
+                profile.picture = request.FILES['picture']
+
+            profile.save()
+
+            # mark the registration as successful
+            registered = True
+        else:
+            print(user_form.errors, profile_form.errors)
+    else:
+        # not a post request, so display blank forms
+        user_form = UserForm()
+        profile_form = UserProfileForm()
+
+    # render it using the context
+    return render(request, 'rango/register.html', {'user_form': user_form,
+                                                   'profile_form': profile_form, 'registered': registered})
