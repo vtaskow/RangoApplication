@@ -45,7 +45,7 @@ def about(request):
     context_dict = {'author': "Viktor Taskov"}
     return render(request, 'rango/about.html', context=context_dict)
 
-
+@login_required
 def add_category(request):
     form = CategoryForm()
 
@@ -62,7 +62,7 @@ def add_category(request):
 
     return render(request, 'rango/add_category.html', {'form': form})
 
-
+@login_required
 def add_page(request, category_name_slug):
     try:
         category = Category.objects.get(slug=category_name_slug)
@@ -144,15 +144,16 @@ def user_login(request):
                 return HttpResponse("Your Rango account is disabled.")
         else:
             # could not authenticate user
-            print("Invalid login details: {0}, {1}".format(username, password))
-            return HttpResponse("Invalid login details supplied.")
+            # print("Invalid login details: {0}, {1}".format(username, password))
+            return render(request, 'rango/login.html', {'invalid': "Invalid login details supplied."})
     else:
         # not a POST request, display login form
         return render(request, 'rango/login.html', {})
 
+# decorator redirects to url that's been set up in settings.py
 @login_required
 def restricted(request):
-    return HttpResponse("Since you are logged in, you can see this text!")
+    return render(request, 'rango/restricted.html', {})
 
 @login_required
 def user_logout(request):
