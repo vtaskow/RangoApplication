@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 from rango.models import Category, Page
 from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm
 from django.contrib.auth.decorators import login_required
+from datetime import datetime
 
 
 # Create your views here.
@@ -18,7 +19,14 @@ def index(request):
     # construct context dict
     context_dict = {'categories': category_list, 'pages': pages_list}
 
-    return render(request, 'rango/index.html', context=context_dict)
+    # handle cookies
+    visitor_cookie_handler(request)
+    context_dict['visits'] = request.session['visits']
+
+    # obtain response obj to add cookies info
+    response = render(request, 'rango/index.html', context=context_dict)
+
+    return response
 
 
 def show_category(request, category_name_slug):
@@ -42,8 +50,18 @@ def show_category(request, category_name_slug):
 
 
 def about(request):
+
     context_dict = {'author': "Viktor Taskov"}
-    return render(request, 'rango/about.html', context=context_dict)
+
+    # handle cookies
+    visitor_cookie_handler(request)
+    context_dict['visits'] = request.session['visits']
+
+    # obtain response obj to add cookies info
+    response = render(request, 'rango/about.html', context=context_dict)
+
+    return response
+
 
 @login_required
 def add_category(request):
@@ -61,6 +79,7 @@ def add_category(request):
             print(form.errors)
 
     return render(request, 'rango/add_category.html', {'form': form})
+
 
 @login_required
 def add_page(request, category_name_slug):
@@ -150,13 +169,42 @@ def user_login(request):
         # not a POST request, display login form
         return render(request, 'rango/login.html', {})
 
+
 # decorator redirects to url that's been set up in settings.py
 @login_required
 def restricted(request):
     return render(request, 'rango/restricted.html', {})
+
 
 @login_required
 def user_logout(request):
     logout(request)
     return HttpResponseRedirect(reverse('index'))
 
+
+def get_server_side_cookie(request, cookie, default_val=None):
+    # request data about a cookie, return None if cookie does not exist
+    val = request.session.get(cookie)
+    if not val:
+        val = default_val
+    return val
+
+
+def visitor_cookie_handler(request):
+    visits = int(get_server_side_cookie(request, 'visits', '1'))
+
+    last_visit_cookie = get_server_side_cookie(request, 'last_visit', str(datetime.now()))
+    # 2017 - 02 - 05 01:19:01.768357
+    last_visit_time = datetime.strptime(last_visit_cookie[:-7], "%Y-%m-%d %H:%M:%S")
+    # 2017 - 02 - 04 23:50:28
+
+    # if a day has elapsed, update visits
+    if (datetime.now() - last_visit_time).days > 0:
+        visits += 1
+        request.session['last_visit'] = str(datetime.now())
+    else:
+        visits = 1
+        request.session['last_visit'] = last_visit_cookie
+
+    # create/update cookie
+    request.session['visits'] = visits
