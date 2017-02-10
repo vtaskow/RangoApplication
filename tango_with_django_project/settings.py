@@ -18,10 +18,10 @@ TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
 MEDIA_DIR = os.path.join(BASE_DIR, 'media')
 
-#print("Testing base_dir components:\n")
-#print(__file__)
-#print(os.path.dirname(__file__))
-#print(os.path.dirname(os.path.dirname(__file__)))
+# print("Testing base_dir components:\n")
+# print(__file__)
+# print(os.path.dirname(__file__))
+# print(os.path.dirname(os.path.dirname(__file__)))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
@@ -34,18 +34,23 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    'django.contrib.sites',
+
     'django.contrib.auth',
+    'django.contrib.admin',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'registration',  # registration-redux package
     'rango',
+
 ]
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -78,7 +83,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'tango_with_django_project.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
@@ -88,7 +92,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
@@ -128,7 +131,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
@@ -141,6 +143,15 @@ STATICFILES_DIRS = [STATIC_DIR, ]
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = '/media/'
 
-# Redirect unauthenticated users to:
+# REGISTRATION-REDUX APPLICATION
 
-LOGIN_URL = '/rango/login/'
+# users can register
+REGISTRATION_OPEN = True
+# remaining days user to activate their account
+ACCOUNT_ACTIVATION_DAYS = 7
+# after registration to login automatically
+REGISTRATION_AUTO_LOGIN = True
+# where users are redirected when they log in
+LOGIN_REDIRECT_URL = '/rango/'
+# where users are redirected when they try to access pages requiring authentication
+LOGIN_URL = '/accounts/login/'
