@@ -1,14 +1,16 @@
 {% extends "rango/base.html" %}
-{% load staticfiles %}
+{% load bootstrap_toolkit %}
 
 {% block body_block %}
 <h2 class="form-signin-heading">Sign Up Here</h2>
 <form role="form" method="post" action=".">
     {% csrf_token %}
+    <!--{{ form|as_bootstrap }}-->
+        <!--<br />-->
     <div class="form-group">
         <p class="required">
             <label class="required" for="id_username">Username:</label>
-            <input class="form-control" id="id_username" maxlength="30" name="username" type="text"/>
+            <input class="form-control" id="id_username" maxlength="20" name="username" type="text"/>
             <span class="helptext">Required. 30 characters or fewer. Letters, digits and @/./+/-/_ only.</span>
         </p>
         <p class="required">

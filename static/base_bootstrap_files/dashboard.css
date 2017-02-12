@@ -22,6 +22,7 @@ h1 {
  */
 
 .sidebar {
+  /*changed from fixed*/
   position: relative;
   top: 51px;
   bottom: 0;

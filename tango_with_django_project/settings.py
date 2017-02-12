@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'registration',  # registration-redux package
     'rango',
+    'bootstrap_toolkit',
 
 ]
 
