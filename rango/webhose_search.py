@@ -1,6 +1,7 @@
 import json
 import urllib
 import urllib2
+import os
 
 
 def read_webhose_key():
@@ -9,9 +10,13 @@ def read_webhose_key():
      either None or the key as a string. Put search.key in .gitignore.
     """
     webhose_api_key = None
-
+    # script_dir = os.path.dirname(__file__)  # absolute path to this
+    # print (os.path.dirname(__file__))
+    search_file = "search.key"
+    if not os.path.isfile(search_file):
+        search_file = "../" + search_file
     try:
-        with open("search.key", "r") as f:
+        with open(search_file, "r") as f:
             webhose_api_key = f.readline().strip()
     except:
         raise IOError("search.key not found!")
@@ -47,8 +52,8 @@ def run_query(search_terms, size=10):
     results = []
 
     try:
-        response = urllib2.urlopen(search_url).read()
-        json_response = json.loads(response)
+        response = urllib2.urlopen(search_url).read()  # string response
+        json_response = json.loads(response)  # convert it to python dict
         for post in json_response['posts']:
             results.append({'title': post['title'], 'link': post['url'], 'summary': post['text'][:200]})
     except:
@@ -56,3 +61,18 @@ def run_query(search_terms, size=10):
 
     # return the results to the calling function
     return results
+
+
+def display_result():
+    pass
+
+
+if __name__ == '__main__':
+    # get the query from user
+    query_input = raw_input("Enter a query:\n")
+    # get the results
+    searched_results = run_query(query_input)
+    for result in searched_results:
+        print (result["title"] + "\n")
+        print (result["summary"])
+    print (os.path.dirname(__file__))

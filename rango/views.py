@@ -6,6 +6,7 @@ from rango.models import Category, Page
 from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
+from rango.webhose_search import run_query
 
 
 # Create your views here.
@@ -50,7 +51,6 @@ def show_category(request, category_name_slug):
 
 
 def about(request):
-
     context_dict = {'author': "Viktor Taskov"}
 
     # handle cookies
@@ -208,3 +208,14 @@ def visitor_cookie_handler(request):
 
     # create/update cookie
     request.session['visits'] = visits
+
+
+def search(request):
+    result_list = []
+    query = ""
+    if request.method == 'POST':
+        query = request.POST['query'].strip()
+        if query:
+            result_list = run_query(query)
+
+    return render(request, "rango/search.html", {'result_list': result_list, 'query': query})
