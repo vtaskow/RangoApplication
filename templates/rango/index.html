@@ -30,7 +30,9 @@ Index
         {% endif %}
 
         {% if user.is_authenticated %}
-        <a href="{% url 'rango:add_category' %}">Add a New Category</a><br/>
+            <p class="btn btn-primary" style="margin: 10px;">
+                <a style="color: white;" href="{% url 'rango:add_category' %}">Add a New Category</a><br/>
+            </p>
         {% endif %}
     </div>
 
