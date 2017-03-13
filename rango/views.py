@@ -30,6 +30,17 @@ def index(request):
     return response
 
 
+def search(request):
+    result_list = []
+    query = ""
+    if request.method == 'POST':
+        query = request.POST['query'].strip()
+        if query:
+            result_list = run_query(query)
+
+    return render(request, "rango/search.html", {'result_list': result_list, 'query': query})
+
+
 def show_category(request, category_name_slug):
     # create context dict to be passed to template later
     context_dict = {}
@@ -38,6 +49,11 @@ def show_category(request, category_name_slug):
     try:
         category = Category.objects.get(slug=category_name_slug)
         pages = Page.objects.filter(category=category).order_by('-views')
+
+        # update number of views of this category
+        category.views += 1
+        category.save()
+
         # add them to context_dict
         context_dict['pages'] = pages
         context_dict['category'] = category
@@ -45,6 +61,16 @@ def show_category(request, category_name_slug):
     except Category.DoesNotExist:
         context_dict['pages'] = None
         context_dict['category'] = None
+
+    result_list = []
+    context_dict['query'] = category.name  # default query
+    if request.method == 'POST':
+        query = request.POST['query'].strip()
+
+        if query:
+            result_list = run_query(query)
+            context_dict['query'] = query
+            context_dict['result_list'] = result_list
 
     # render the response and return it to the client
     return render(request, 'rango/category.html', context=context_dict)
@@ -210,28 +236,23 @@ def visitor_cookie_handler(request):
     request.session['visits'] = visits
 
 
-def search(request):
-    result_list = []
-    query = ""
-    if request.method == 'POST':
-        query = request.POST['query'].strip()
-        if query:
-            result_list = run_query(query)
-
-    return render(request, "rango/search.html", {'result_list': result_list, 'query': query})
-
-
 def track_url(request):
     page_id = None
     url = '/rango/'
+
+    # if this is a get request
     if request.method == 'GET':
+        # if there we clicked on a page
         if 'page_id' in request.GET:
+            # get it id of that page
             page_id = request.GET['page_id']
 
+            # try to get this Page instance and update its views field, otherwise do nothing
             try:
                 page = Page.objects.get(pk=page_id)
                 page.views += 1
                 page.save()
+                # redirect the user to the page.url
                 url = page.url
             except:
                 pass

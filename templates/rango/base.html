@@ -42,10 +42,10 @@
             <a class="nav-item nav-link" href="{% url 'auth_password_change' %}">Change password</a>
             <a class="nav-item nav-link" href="{% url 'rango:add_category' %}">Add a New Category</a>
             <a class="nav-item nav-link" href="{% url 'auth_logout' %}?next=/rango/">Logout</a>
+            <!--<a class="nav-item nav-link" href="{% url 'rango:search' %}">Search</a>-->
             {% else %}
             <a class="nav-item nav-link" href="{% url 'registration_register' %}">Register Here</a>
             <a class="nav-item nav-link" href="{% url 'auth_login' %}">Login</a>
-            <a class="nav-item nav-link" href="{% url 'rango:search' %}">Search</a>
             {% endif %}
         </nav>
     </div>
