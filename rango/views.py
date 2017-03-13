@@ -7,6 +7,8 @@ from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from rango.webhose_search import run_query
+from django.contrib.auth.models import User
+from rango.models import Page, Category, UserProfile
 
 
 # Create your views here.
@@ -130,6 +132,7 @@ def add_page(request, category_name_slug):
     context_dict = {"form": form, "category": category}
     return render(request, 'rango/add_page.html', context_dict)
 
+
 @login_required
 def register_profile(request):
     form = UserProfileForm()
@@ -147,6 +150,31 @@ def register_profile(request):
 
     context_dict = {'form': form}
     return render(request, 'rango/profile_registration.html', context_dict)
+
+
+@login_required
+def profile(request, username):
+    # obtain the user instance or go to index
+    try:
+        user = User.objects.get(username=username)
+    except User.DoesNotExist:
+        return redirect('index')
+
+    # get users data from the other form
+    userprofile = UserProfile.objects.get_or_create(user=user)[0]
+    form = UserProfileForm({'website': userprofile.website, 'picture': userprofile.picture})
+
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, request.FILES, instance=userprofile)
+        if form.is_valid():
+            form.save(commit=True)
+            return redirect('profile', user.username)
+        else:
+            print(form.errors)
+
+    context_dict = {'userprofile': userprofile, 'selecteduser': user, 'form': form}
+
+    return render(request, 'rango/profile.html', context_dict)
 
 
 # def register(request):
@@ -275,4 +303,3 @@ def track_url(request):
             except:
                 pass
     return redirect(url)
-

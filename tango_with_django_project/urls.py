@@ -16,9 +16,11 @@ Including another URLconf
 import warnings
 from django.conf import settings
 from django.conf.urls import url, include
+from django.core.urlresolvers import resolve
 from django.conf.urls.static import static
 from django.contrib import admin
 from rango import views
+from rango.views import register_profile
 from django.contrib.auth import views as auth_views
 from django.views.generic.base import TemplateView
 from registration.backends.simple.views import RegistrationView
@@ -39,7 +41,7 @@ from django.contrib.auth import (
 
 class MyRegistrationView(RegistrationView):
     def get_success_url(self, user=None):
-        return url('register_profile')
+        return '/rango/register_profile/'
 
 
 # Class-based password reset views
