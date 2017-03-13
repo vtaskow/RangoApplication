@@ -139,8 +139,12 @@ def register_profile(request):
 
     if request.method == 'POST':
         profile_form = UserProfileForm(request.POST, request.FILES)  # bind form with data
+        website = request.POST.get('website')
+        picture = request.FILES.get('picture')
         if profile_form.is_valid():
             profile_form = form.save(commit=False)
+            profile_form.website = website
+            profile_form.picture = picture
             profile_form.user = request.user
             profile_form.save()
 
@@ -153,6 +157,12 @@ def register_profile(request):
 
 
 @login_required
+def list_profiles(request):
+    userprofile_list = UserProfile.objects.all()
+    return render(request, 'rango/list_profiles.html', {'userprofile_list': userprofile_list})
+
+
+@login_required
 def profile(request, username):
     # obtain the user instance or go to index
     try:
@@ -160,15 +170,17 @@ def profile(request, username):
     except User.DoesNotExist:
         return redirect('index')
 
+    # print(user.username)
     # get users data from the other form
     userprofile = UserProfile.objects.get_or_create(user=user)[0]
+    # print(userprofile.website)
     form = UserProfileForm({'website': userprofile.website, 'picture': userprofile.picture})
 
     if request.method == 'POST':
         form = UserProfileForm(request.POST, request.FILES, instance=userprofile)
         if form.is_valid():
             form.save(commit=True)
-            return redirect('profile', user.username)
+            return redirect('rango:profile', user.username)
         else:
             print(form.errors)
 

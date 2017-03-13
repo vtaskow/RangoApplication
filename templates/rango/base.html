@@ -39,6 +39,8 @@
             <a class="nav-item nav-link" href="{% url 'rango:index' %}">Home</a>
             <a class="nav-item nav-link" href="{% url 'rango:about' %}">About</a>
             {% if user.is_authenticated %}
+            <a class="nav-item nav-link" href="{% url 'rango:profile' user.username %}">Profile</a>
+            <a class="nav-item nav-link" href="{% url 'rango:list_profiles' %}">List Profiles</a>
             <a class="nav-item nav-link" href="{% url 'auth_password_change' %}">Change password</a>
             <a class="nav-item nav-link" href="{% url 'rango:add_category' %}">Add a New Category</a>
             <a class="nav-item nav-link" href="{% url 'auth_logout' %}?next=/rango/">Logout</a>
