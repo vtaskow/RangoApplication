@@ -39,7 +39,7 @@ from django.contrib.auth import (
 
 class MyRegistrationView(RegistrationView):
     def get_success_url(self, user=None):
-        return '/rango/'
+        return url('register_profile')
 
 
 # Class-based password reset views

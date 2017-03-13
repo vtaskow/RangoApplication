@@ -130,6 +130,24 @@ def add_page(request, category_name_slug):
     context_dict = {"form": form, "category": category}
     return render(request, 'rango/add_page.html', context_dict)
 
+@login_required
+def register_profile(request):
+    form = UserProfileForm()
+
+    if request.method == 'POST':
+        profile_form = UserProfileForm(request.POST, request.FILES)  # bind form with data
+        if profile_form.is_valid():
+            profile_form = form.save(commit=False)
+            profile_form.user = request.user
+            profile_form.save()
+
+            return redirect('index')
+        else:
+            print(form.errors)
+
+    context_dict = {'form': form}
+    return render(request, 'rango/profile_registration.html', context_dict)
+
 
 # def register(request):
 #     # A boolean to tell if the reg-n has been successful
@@ -257,3 +275,4 @@ def track_url(request):
             except:
                 pass
     return redirect(url)
+
