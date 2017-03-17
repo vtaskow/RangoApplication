@@ -7,6 +7,23 @@
 
 {% block body_block %}
     <h1>This is the 'about' page</h1>
+    <button class="btn btn-primary"
+    onClick="alert('You clicked the button using JavaScript.');">
+    Click Me - I run JavaScript
+    </button>
+
+    <button id="about-btn">
+    Click Me - I'm JavaScript on Speed</button>
+
+    <br>    <br>
+
+    <p class="ouch">This is a example - OUCH!</p>
+    <p>This is another example</p>
+
+    <div id="msg">Hello - I'm here for a JQuery Example too</div>
+
+    <br>
+
     <div>
         <p> About page visits: {{ visits }}</p>
         <strong> This tutorial has been put together by {{ author }}</strong><br/>
