@@ -7,12 +7,16 @@
 
 {% block body_block %}
     <h1> Profile: {{ selecteduser.username }}</h1>
+    {% if userprofile.picture %}
     <img style="margin-bottom:15px; max-height: 100%;" src="{{ MEDIA_URL }}{{ userprofile.picture }}"  width="15%" alt="{{ selecteduser.username }}"/>
+    {% endif %}
     <br>
-    <p>
-        <strong>Website:</strong>
-        <a href="{{userprofile.website}}" target="_blank" >{{userprofile.website}}</a>
-    </p>
+        {% if userprofile.website %}
+        <p>
+            <strong>Website:</strong>
+            <a href="{{userprofile.website}}" target="_blank" >{{userprofile.website}}</a>
+        </p>
+        {% endif %}
     <div>
         {% if selecteduser.username == user.username %}
             <form method="post" action="." enctype="multipart/form-data">

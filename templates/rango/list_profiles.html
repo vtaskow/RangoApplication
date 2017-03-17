@@ -11,13 +11,17 @@
         {% if userprofile_list %}
             <div class="panel-heading">
                 <div class="list-group">
-                    {% for listuser in userprofile_list %}
+                    {% for listed_user in userprofile_list %}
                         <div class="list-group-item">
+                            {% if listed_user.picture %}
+                                <img class="img-thumbnail" src="{{ MEDIA_URL }}{{ listed_user.picture }}" style="margin-right: 20px; max-height: 100%" width="6%">
+                            {% else %}
+                                <img class="img-thumbnail" style="margin-right: 20px;" width="64" height="64" src="http://lorempixel.com/128/128/people/" alt="No picture"/>
+                            {% endif %}
                             <h4 class="list-group-item-heading">
-                                <a href="{% url 'rango:profile' listuser.user.username %}">{{ listuser.user.username }}</a>
+                                <a href="{% url 'rango:profile' listed_user.user.username %}">{{ listed_user.user.username }}</a>
                             </h4>
                         </div>
-                        <img width="64" height="64" src="http://lorempixel.com/64/64/people/"/>
                     {% endfor %}
                 </div>
             </div>
