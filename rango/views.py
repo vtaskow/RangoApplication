@@ -133,6 +133,7 @@ def add_page(request, category_name_slug):
     return render(request, 'rango/add_page.html', context_dict)
 
 
+# this manages additional information when a user registers - accouts/register
 @login_required
 def register_profile(request):
     form = UserProfileForm()
@@ -143,11 +144,11 @@ def register_profile(request):
         picture = request.FILES.get('picture')
         if profile_form.is_valid():
             profile_form = form.save(commit=False)
+            # needed to save them manually since they would not
             profile_form.website = website
             profile_form.picture = picture
             profile_form.user = request.user
             profile_form.save()
-
             return redirect('index')
         else:
             print(form.errors)
@@ -170,10 +171,8 @@ def profile(request, username):
     except User.DoesNotExist:
         return redirect('index')
 
-    # print(user.username)
     # get users data from the other form
     userprofile = UserProfile.objects.get_or_create(user=user)[0]
-    # print(userprofile.website)
     form = UserProfileForm({'website': userprofile.website, 'picture': userprofile.picture})
 
     if request.method == 'POST':

@@ -6,14 +6,14 @@
 {% endblock %}
 
 {% block body_block %}
-    <h1>{{ selecteduser.username }} Profile</h1>
-    <img style="margin:10px; max-width: 100%;" src="{{ MEDIA_URL }}{{ userprofile.picture }}"  height="15%" alt="{{ selecteduser.username }}"/>
+    <h1> Profile: {{ selecteduser.username }}</h1>
+    <img style="margin-bottom:15px; max-height: 100%;" src="{{ MEDIA_URL }}{{ userprofile.picture }}"  width="15%" alt="{{ selecteduser.username }}"/>
     <br>
-    <p style="margin:10px;">
+    <p>
         <strong>Website:</strong>
-        <a href="{{userprofile.website}}">{{userprofile.website}}</a>
+        <a href="{{userprofile.website}}" target="_blank" >{{userprofile.website}}</a>
     </p>
-    <div style="margin:10px;">
+    <div>
         {% if selecteduser.username == user.username %}
             <form method="post" action="." enctype="multipart/form-data">
                 {% csrf_token %}
