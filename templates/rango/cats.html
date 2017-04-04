@@ -1,13 +1,13 @@
-<ul>
+<ul class="list-group">
     {% if cats %}
         {% for c in cats %}
             {% if c == act_cat %}
-                <li><strong><a href="{% url 'rango:show_category' c.slug %}">{{ c.name }}</a></strong></li>
+                <li class="list-group-item base"><strong><a href="{% url 'rango:show_category' c.slug %}">{{ c.name }}</a></strong></li>
             {% else %}
-                <li><a href="{% url 'rango:show_category' c.slug %}">{{ c.name }}</a></li>
+                <li class="list-group-item base"><a href="{% url 'rango:show_category' c.slug %}">{{ c.name }}</a></li>
             {% endif %}
         {% endfor %}
     {% else %}
-        <li> <strong>There are no categories present.</strong></li>
+        <li class="list-group-item base"><strong>There are no categories present.</strong></li>
     {% endif %}
 </ul>

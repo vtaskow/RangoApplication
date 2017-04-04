@@ -2,13 +2,12 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from django.core.urlresolvers import reverse
-from rango.models import Category, Page
 from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from rango.webhose_search import run_query
 from django.contrib.auth.models import User
-from rango.models import Page, Category, UserProfile
+from rango.models import *
 
 
 # Create your views here.
@@ -314,3 +313,52 @@ def track_url(request):
             except:
                 pass
     return redirect(url)
+
+
+@login_required
+def like_category(request):
+    # ajax view to update the likes of this category
+    cat_id = None
+    if request.method == "GET":
+        cat_id = request.GET['category_id']
+    likes = 0
+    if cat_id:
+        cat = Category.objects.get(id=int(cat_id))
+        if cat:
+            likes = cat.likes + 1
+            cat.likes = likes
+            cat.save()
+    return HttpResponse(likes)
+
+
+def get_category_list(max_results=0, starts_with=""):
+    """
+    :param max_results: how many results we show 
+    :param starts_with: categories that start with this string
+    :return: list of category that match the filtering
+    """
+    cat_list = []
+    if starts_with:
+        cat_list = Category.objects.filter(name__istartswith=starts_with)
+    else:
+        cat_list = Category.objects.all()  # explicit
+    if max_results > 0:
+        if len(cat_list) > max_results:
+            cat_list = cat_list[:max_results]
+    return cat_list
+
+
+def suggest_category(request):
+    """
+    Gets the value of the suggestion key from the GET request and returns those 
+    categories that match the criteria
+    """
+    cat_list = []
+    starts_with = ""
+
+    if request.method == 'GET':
+        starts_with = request.GET['suggestion']
+
+    cat_list = get_category_list(8, starts_with)
+    return render(request, 'rango/cats.html', {'cats': cat_list})
+

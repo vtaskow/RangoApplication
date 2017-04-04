@@ -1,0 +1,23 @@
+.cat_input {
+    display: block;
+    margin: auto;
+    margin-bottom: 15px;
+    width: 80%;
+}
+
+#find_cat {
+    color: black;
+    text-align: center;
+}
+
+li.list-group-item.base {
+    width: 80%;
+    margin: auto;
+}
+li.list-group-item.base a {
+    text-decoration: none;
+}
+
+li.list-group-item strong {
+    text-align: center;
+}

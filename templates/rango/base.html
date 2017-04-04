@@ -15,7 +15,10 @@
     <title>
         Rango - {% block title_block %}How to Tango with Django!{% endblock %}
     </title>
-
+    <script
+            src="{% static 'jquery.min.js' %}">
+    </script>
+    <script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
     <link href="{% static 'custom.css' %}" rel="stylesheet"/>
 
     <!-- Bootstrap core CSS -->
@@ -59,7 +62,10 @@
     <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
             {% block sidebar_block %}
-                {% get_category_list category %}
+                <p id="find_cat">Type to find a category</p>
+                <input class="input-medium search-query cat_input" type="text" name="suggestion" value="" id="suggestion" />
+                <div id="cats">
+                </div>
             {% endblock %}
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
@@ -78,12 +84,15 @@
         src="{% static 'ie10-viewport-bug-workaround.js' %}">
 </script>
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-<script
-        src="{% static 'jquery.min.js' %}">
-</script>
+
 <!-- custom jquery -->
 <script
         src="{% static 'js/rango-jquery.js' %}">
+</script>
+
+<!-- custom ajax -->
+<script
+        src="{% static 'js/rango-ajax.js' %}">
 </script>
 
 </body>
