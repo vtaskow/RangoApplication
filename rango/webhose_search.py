@@ -1,6 +1,5 @@
 import json
 import urllib
-import urllib2
 import os
 
 
@@ -52,7 +51,7 @@ def run_query(search_terms, size=10):
     results = []
 
     try:
-        response = urllib2.urlopen(search_url).read()  # string response
+        response = urllib.urlopen(search_url).read()  # string response
         json_response = json.loads(response)  # convert it to python dict
         for post in json_response['posts']:
             results.append({'title': post['title'], 'link': post['url'], 'summary': post['text'][:200]})
@@ -69,7 +68,7 @@ def display_result():
 
 if __name__ == '__main__':
     # get the query from user
-    query_input = raw_input("Enter a query:\n")
+    query_input = input("Enter a query:\n")
     # get the results
     searched_results = run_query(query_input)
     for result in searched_results:
