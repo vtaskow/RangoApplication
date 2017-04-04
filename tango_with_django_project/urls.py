@@ -25,6 +25,7 @@ from django.contrib.auth import views as auth_views
 from django.views.generic.base import TemplateView
 from registration.backends.simple.views import RegistrationView
 from django.views.generic.edit import FormView
+from django.core.urlresolvers import reverse
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.forms import (
     AuthenticationForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm,
