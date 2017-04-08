@@ -19,4 +19,5 @@ urlpatterns = [
     url(r'^profiles/$', views.list_profiles, name='list_profiles'),
     url(r'^like/$', views.like_category, name='like_category'),
     url(r'^suggest/$', views.suggest_category, name='suggest_category'),
+    url(r'^pages/$', views.PageListView.as_view(), name='show_pages'),
 ]

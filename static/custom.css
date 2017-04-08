@@ -21,3 +21,25 @@ li.list-group-item.base a {
 li.list-group-item strong {
     text-align: center;
 }
+
+ul.pag-n {
+    display: inline-flex;
+    list-style: none;
+}
+
+ul.pag-n li {
+    margin: 0.3em;
+}
+
+ul.pag-n li a {
+    text-decoration: none;
+}
+
+.disabledd {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.selectedd {
+    font-weight: bold;
+}

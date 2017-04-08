@@ -1,13 +1,20 @@
+from datetime import datetime
+
+from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, HttpResponseRedirect
+
+from rango.forms import CategoryForm, PageForm, UserProfileForm
+from rango.models import *
+from rango.webhose_search import run_query
+from django.views.generic import ListView
+
+"""
+from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.core.urlresolvers import reverse
-from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm
-from django.contrib.auth.decorators import login_required
-from datetime import datetime
-from rango.webhose_search import run_query
-from django.contrib.auth.models import User
-from rango.models import *
+"""
 
 
 # Create your views here.
@@ -362,3 +369,15 @@ def suggest_category(request):
     cat_list = get_category_list(8, starts_with)
     return render(request, 'rango/cats.html', {'cats': cat_list})
 
+
+class PageListView(ListView):
+    """
+    Class-based View for all pages, along with a paginator.
+    """
+    model = Page
+    paginate_by = 4
+    template_name = 'rango/show_pages.html'
+
+    def get_queryset(self):
+        sorted_pages = Page.objects.all().order_by("-views")
+        return sorted_pages

@@ -7,8 +7,8 @@ $(document).ready(function() {
    $.get('/rango/like/', {category_id: catid}, function(data){
         // success function - upon returning from the view, update the new likes value
         // data here is the new number of likes - update its value and hide the button
-        $('#like_counts').html(data);
-        $('#likes').fadeOut(1000);
+        $('#like_count').html(data);
+        $('#likes').hide();
        });
    });
 
